@@ -5,7 +5,7 @@ let isConnected = false;
 const connectDB = async () => {
   if (isConnected) return;
 
-  const uri = process.env.MONGODB_URI;
+  const uri = process.env.MONGODB_URI || process.env.MONGO_URL;
   if (!uri || !(uri.startsWith('mongodb://') || uri.startsWith('mongodb+srv://'))) {
     console.error('❌ Invalid or missing MONGODB_URI:', uri);
     throw new Error('MONGODB_URI is missing or malformed');
