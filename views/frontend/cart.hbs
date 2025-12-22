@@ -1,0 +1,160 @@
+<head>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+</head>
+<body>
+  <div class="cart-section">
+    <h3>
+      <span style="color: rgb(243, 7, 7); font-size:large;">Your </span>
+      <span style="color: blueviolet; font-size:large;">Cart</span>
+    </h3>
+  </div>
+  <div style="display: flex; align-items: center; gap: 1rem; margin: 0;">
+    {{! Start here     }}
+    <form action="/home#restaurant" method="GET">
+      <button
+        type="submit"
+        class="back-button_out"
+        style="font-weight: bold; padding: 3px 8px;
+        margin-top:10px;"
+      >
+        <span style="font-size: 0.9rem;font-weight:bold">👀 Browse Restaurants</span>
+      </button>
+    </form>
+    {{! End here }}
+  </div>
+  <form method="POST">
+    <ul style="list-style-type: none; padding: 0; line-height: 1.5;">
+      {{#each cart}}
+        <li style="margin-bottom: 5px;">
+          <div
+            style="display: flex; align-items: left; gap: 8px; flex-wrap: wrap"
+          >
+            <label
+              style="display: flex; align-items: center; gap:5px; margin: 0"
+            >
+              <input
+                type="checkbox"
+                name="selectedMeals"
+                value="{{this.mealId}}"
+              />
+              <strong style="font-size: 15px;">{{this.name}}</strong>– QR
+              {{this.price}}
+            </label>
+
+            <div class="quantity-wrapper" data-index="{{@index}}">
+              <button
+                type="button"
+                class="decrement"
+                style="margin-right: 0px;"
+              >−</button>
+              <input
+                type="number"
+                name="quantities[{{@index}}]"
+                value="{{this.quantity}}"
+                min="1"
+                max="99"
+                class="quantity-input"
+                style="width: 25px;color:red;font-weight:bold; 
+                text-align:center;margin:0px;padding:0px;border:none;
+                background-color:transparent;font-size:14px"
+              />
+              <button
+                type="button"
+                class="increment"
+                style="margin-left: 0px;"
+              >+</button>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+
+    <div style="display: flex; gap: 1rem;">
+      <button
+        type="submit"
+        form action="/cart/update-quantities"
+        class="back-button_out"
+        style="font-weight: bold; font-size:14px;"
+      >
+        Update Cart
+        <span style="font-size: 16px;font-weight:bold">🔄</span>
+      </button>
+
+      <button
+        type="submit"
+        formaction="/cart/remove-selected"
+        class="back-button_out"
+        style="background-color:red"
+        style="font-weight: bold; font-size:15px;"
+      >
+        Delete Selected
+        <span style="font-size: 12px;">🗑️</span>
+      </button>
+    </div>
+  </form>
+
+  {{#if cart.length}}
+    <!-- ✅ Checkout Form -->
+    <div
+      class="checkout-row"
+      style="display: flex; align-items: center; gap: 1rem; margin-top: 2rem;"
+    >
+      <h4 style="margin: 0;font-size:15px;font-weight:bold">Total: QR
+        {{total}}</h4>
+
+      <form action="/order/confirm" method="GET" style="margin: 0;">
+        <input type="hidden" name="customerName" value="Any User" />
+        <input type="hidden" name="location" value="Any City" />
+        <input type="hidden" name="latitude" id="latitude" />
+        <input type="hidden" name="longitude" id="longitude" />
+        <button
+          type="submit"
+          class="back-button_out"
+          style="font-weight: bold;font-size:15px"
+        >Checkout <span style="font-size: 16px;">✅</span> </button>
+      </form>
+    </div>
+
+    {{#if favoriteMeals.length}}
+      <!-- ✅ Favorite Meals Section -->
+      <br /><br />
+      <div style="margin-top: 2rem;">
+        <h3>
+          <span style="color: rgb(243, 7, 7); font-size: large;">Favorite</span>
+          <span style="color: blueviolet; font-size: large;">Meals</span>
+        </h3>
+      </div>
+
+      <form action="/order/favorite-selection" method="POST">
+        <ul style="list-style-type: none; padding: 0px;margin:0px">
+          {{#each favoriteMeals}}
+            <li>
+              <label>
+                <input
+                  type="checkbox"
+                  name="selectedFavorites[]"
+                  value="{{this._id}}"
+                />
+                {{this.name}} – QR {{this.price}}
+              </label>
+            </li>
+          {{/each}}
+        </ul>
+        <button
+          type="submit"
+          class="back-button_out"
+          style="font-weight: bold;font-size: 15px"
+        >
+          Add to Cart <span class="cart-icon">🛒</span>
+        </button>
+      </form>
+    {{/if}}
+{{else}}
+    <p>Your cart is empty.</p>
+{{/if}}
+   <script src="/js/cart-behavior.js"></script>
+</body>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
+  <meta http-equiv="refresh" content="10;url=/home">
+  <link rel="stylesheet" href="/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+ .hero-subtext,.hero-heading,.hero-heading,
+ .neon-text,.hero-logo-content{
+  text-align: center;
+ }
+ .hero-logo-content img{
+  width: 50%;
+  height: 50%;
+ }
+</style>
+<body>
+  <section class="intro-hero">
+  <div class="hero-logo-content">
+    <img src="/images/flamingo-logo.png" alt="Flamingo Express Logo" class="hero-logo" />
+    <h1 class="hero-heading">Welcome to <span class="flamingo">Flamingo</span> <span class="express">Express</span></h1>
+    <p class="hero-subtext" style="font-weight:bold">
+    <span style="color: rgb(243, 7, 7)">Fast &
+    <span style="color: blueviolet">Accurate Delivery
+    <span style="color: rgb(22, 238, 130)">— Right to  
+    <span style="color: rgb(69, 7, 7)">Your Doorstep!</span>      
+    </p>
+  </div>
+</section>
+
+<div style="text-align:center; margin-top:1.5rem;">
+  <a href="/register" class="checkout-button" style="margin-right:0.5rem;">Continue (Optional Registration)</a>
+  <a href="/order/confirm" class="btn-secondary">Skip & Go to Confirm</a>
+</div>
+
+
+ <script>
+  document.addEventListener("click", () => {
+    window.location.href = "/introduction/control";
+  });
+
+  // Auto-skip after 3 seconds
+  setTimeout(() => {
+    window.location.href = "home";
+  }, 3000);
+
+  // Skip on tap or click
+  document.addEventListener("click", () => {
+    window.location.href = "home";
+  });
+
+  // Skip on swipe (mobile)
+  let touchStartX = 0;
+  document.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+  });
+
+  document.addEventListener("touchend", (e) => {
+    if (Math.abs(e.changedTouches[0].clientX - touchStartX) > 30) {
+      window.location.href = "home";
+    }
+  });
+</script>
+</body>
+</html>

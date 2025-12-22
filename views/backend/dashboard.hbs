@@ -1,0 +1,210 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <h1 style="text-align: center;">{{title}}</h1>
+      <a href="/reports/driver-meals" class="btn-link">
+        <div style="text-align: center;">
+        <button class="checkout-button" style="align-items: center; ">Drivers Meals Report</button>
+        </div>
+      </a>
+      <h2>Notifications</h2>
+      {{#if notifications.length}}
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each notifications}}
+              <tr id="notification-{{this._id}}">
+                <td>{{this.message}}</td>
+                {{!-- <td class="status-cell">{{this.status}}</td> --}}
+                <td class="status-cell" id="status-{{this._id}}">{{this.status}}</td>
+                <td>{{this.createdAt}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{else}}
+        <p>No notifications found.</p>
+      {{/if}}
+
+      <form
+          method="GET"
+          action="/dashboard"
+          class="food-form"
+          style="max-width: 400px;"
+        >
+  <input
+    type="text"
+    name="search"
+    placeholder="Search by name..."
+    value="{{search}}"
+  />
+  <button type="submit">Search</button>
+  <a href="/dashboard" style="font-size: 0.9rem; color: #666;">Clear Search</a>
+</form>
+<hr />
+<section class="dashboard">
+  <h2>Add New Food Item</h2>
+  <form
+    method="POST"
+    action="/dashboard/add-food"
+    enctype="multipart/form-data"
+    class="food-form"
+  >
+<div>
+  <label for="menuChoice">Select if entering a menu</label>
+
+  <label>
+    <input
+      type="checkbox"
+      id="addLogoCheckbox"
+      name="restaurantOptions"
+      value="includeLogo"
+      {{#if checkboxState}}checked{{/if}}>
+    Add restaurant logo/image
+  </label>
+
+  <label for="restaurantLogo">Upload Logo:</label>
+  <input
+    type="file"
+    name="restaurantLogo"
+    id="restaurantLogo"
+    accept="image/*"
+    style="opacity: 0.4; cursor: not-allowed;"
+  />
+</div>
+    <div style="display: flex; gap: 1rem;">
+       <div style="flex: 1;">
+          <label for="name_en">Food Name</label>
+          <input type="text" id="name_en" name="name" class="short-input" />
+       </div>
+       <div style="flex: 1;">
+        <label for="name_ar">الأسم العربي:</label>
+        <input type="text" id="name_ar" name="name_ar" class="short-input" dir="rtl" />
+       </div>
+    </div>
+
+    <input type="number" step="1" name="price" placeholder="Price" required class="short-input"/>
+    <div style="display: flex; gap: 1rem;">
+       <div style="flex: 1;">
+         <label for="details">Details</label>
+         <input type="text" id="details" name="details" class="short-input" style="width:500"/>
+       </div>
+
+       <div style="flex: 1;">
+         <label for="details_ar">المكونات:</label>
+         <input type="text" id="details_ar" name="details_ar" class="short-input" style="width:500" dir="rtl" />
+       </div>
+    </div>
+
+    <div style="display: flex; gap: 1rem;">
+       <div style="flex: 1;">
+         <label for="restaurant">Restaurant</label>
+         <input type="text" id="restaurant_en" name="restaurant_en" class="short-input" />
+       </div>
+
+       <div style="flex: 1;">
+         <label for="restaurant_ar">المطعم:</label>
+         <input type="text" id="restaurant_ar" name="restaurant_ar" class="short-input" dir="rtl" />
+       </div>
+    </div>
+  <div>
+   <input  type="text" name="address" id="restaurantAddress"
+   placeholder="Restaurant Address" class="short-input" style="width:500px" required/>
+  </div>
+
+  <div>
+    <select name="cuisine" style="height: 35px" class="dropdown" required>
+      <option value=" " selected>-- Select Cuisine --</option>
+      <option value="Japanese">Japanese</option>
+      <option value="Mexican ">Mexican </option>
+      <option value="Italian ">Italian </option>
+      <option value="Spanish ">Spanish </option>
+      <option value="Greek ">Greek </option>
+      <option value="Thai  ">Thai </option>
+      <option value="Indian ">Indian </option>
+      <option value="Chinese  ">Chinese </option>
+      <option value="Turkish   ">Turkish </option>
+    </select>
+  </div>
+    <select name="offer" style="height: 35px" class="dropdown" required>
+      <option value="" selected>-- Select offer --</option>
+      <option value="false">No Offer</option>
+      <option value="true">Offer Available</option>
+    </select>
+    <input type="number" name="period" min="0" placeholder="Offer period (days)" class="short-input"/>
+    <input type="file" name="image" accept="image/*" required />
+    <button type="submit">Add Item</button>
+  </form>
+  <hr />
+
+  <h3>Current Items</h3>
+  <div class="food-grid">
+  {{#each foodItems}}
+    <div class="food-card">
+      <img src="{{this.image}}" alt="{{this.name}}" />
+      <h4>{{this.name}}</h4>
+      <h4 dir="rtl">{{this.name_ar}}</h4>
+      <p>QAR {{this.price}}</p>
+      <h4>Restaurant: {{this.restaurant_en}}</h4>
+      <h4 dir="rtl">المطعم: {{this.restaurant_ar}}</h4> 
+      <p>Address: {{this.address}}</p>
+      <p>Cuisine: {{this.cuisine}}</p>
+      <p>Offer: {{this.offer}}</p>
+      <p>Period: {{this.period}} day(s)</p>
+      <h4 style="line-height: 0.75rem;">Details: {{this.details}}</h4>
+      <h4 style="line-height: 0.75rem;" dir="rtl">المكونات: {{this.details_ar}}</h4>
+
+      <!-- Edit button -->
+      <div class="button-group">
+      <form action="/dashboard/edit/{{this._id}}" method="GET" class="food-form button" style="align-items:center">
+        <button type="submit" style="width: 35px;height:40px;padding:0;color:white">Edit</button>
+      </form>
+
+      <!-- Delete button -->
+      <form action="/dashboard/delete/{{this._id}}" method="POST" class="food-form button" style="align-items:center">
+        <button type="submit" style="width: 35px;height:40px;padding:0">🗑️</button>
+      </form>
+      </div>
+    </div>
+  {{/each}}
+</div>
+</section>
+<script src="/js/dashboard.js"></script>
+<script>
+  function markAsDelivered(notificationId, orderId) {
+    fetch(`/delivery/notification-delivered/${notificationId}`, {
+      method: 'POST',
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        const statusCell = document.getElementById(`status-${notificationId}`);
+        if (statusCell) {
+          statusCell.textContent = 'delivered';
+        }
+
+        const button = document.querySelector(`#notification-${notificationId} button`);
+        if (button) button.remove();
+      } else {
+        alert("❌ Failed to update status.");
+      }
+    })
+    .catch(err => {
+      console.error('❌ AJAX error:', err);
+      alert('Error updating status.');
+    });
+  }
+</script>
+</body>

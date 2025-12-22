@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <script
+      async
+      defer
+       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZLHETy0qW5YO93hRX65le0-bbSZcmfdo&callback=initMap">
+    </script>
+  </head>
+  <body>
+    <h1 style="text-align:center;">🚚 My Assigned Orders</h1>
+    <h2>Welcome, {{driverName}} 👋</h2>
+    <hr>
+
+
+    {{#each orders}}
+      <div class="order-card">
+        <h3>🧾 Order for {{this.customerName}}</h3>
+        <p><strong>Mobile:</strong> {{this.customerMobile}}</p>
+        <p><strong>Status:</strong> {{this.status}}</p>
+        <p><strong>Restaurant:</strong>
+          {{#if this.restaurant}}
+            {{this.restaurant.restaurant_en}}
+          {{else}}
+            Unknown
+          {{/if}}
+        </p>
+
+       <p><strong>Delivery Man:</strong>
+        {{#if this.deliveryPersonId}}
+         {{this.deliveryPersonId.name}}
+        {{else}}
+        Not assigned
+       {{/if}}
+       </p>
+
+        {{#if this.customerLat}}
+          {{#if this.restaurantLat}}
+            <div id="map-{{@index}}" class="map" style="height: 300px;"></div>
+           <a
+            class="btn-directions"
+            target="_blank"
+            href="https://www.google.com/maps/dir/?api=1&origin={{this.restaurantLat}},{{this.restaurantLng}}&destination={{this.customerLat}},{{this.customerLng}}"
+           >
+                🧭 Get Directions
+          </a>
+            <p>Customer Lat: {{this.customerLat}}</p>
+            <p>Customer Lng: {{this.customerLng}}</p>
+            <p>Restaurant Lat: {{this.restaurantLat}}</p>
+            <p>Restaurant Lng: {{this.restaurantLng}}</p>
+            <p><strong>Estimated Distance:</strong>
+            {{distance this.restaurantLat this.restaurantLng this.customerLat this.customerLng}} 
+            </p>
+
+          <script>
+                  (function() {
+                  const restaurantLat = parseFloat("{{this.restaurantLat}}");
+                  const restaurantLng = parseFloat("{{this.restaurantLng}}");
+                  const customerLat = parseFloat("{{this.customerLat}}");
+                  const customerLng = parseFloat("{{this.customerLng}}");
+
+                  if (!isNaN(restaurantLat) && !isNaN(restaurantLng) && !isNaN(customerLat) && !isNaN(customerLng)) {
+                    const restaurant = { lat: restaurantLat, lng: restaurantLng };
+                    const customer = { lat: customerLat, lng: customerLng };
+                    const map = new google.maps.Map(document.getElementById("map-{{@index}}"), {
+                      zoom: 14,
+                      center: restaurant,
+                    });
+
+                    new google.maps.Marker({
+                      position: restaurant,
+                      map,
+                      title: "Restaurant",
+                      icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                    });
+
+                    new google.maps.Marker({
+                      position: customer,
+                      map,
+                      title: "Customer",
+                      icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                    });
+
+                    const directionsService = new google.maps.DirectionsService();
+                    const directionsRenderer = new google.maps.DirectionsRenderer({ map });
+
+                    directionsService.route(
+                      {
+                        origin: restaurant,
+                        destination: customer,
+                        travelMode: "DRIVING",
+                      },
+                      function (response, status) {
+                        if (status === "OK") {
+                          directionsRenderer.setDirections(response);
+                        } else {
+                          console.warn("❌ Route error: " + status);
+                        }
+                      }
+                    );
+                  } else {
+                    console.warn("⚠️ Coordinates missing for order {{@index}}");
+                  }
+                })();
+              </script>
+          {{/if}}
+        {{/if}}
+        {{! ✅ Confirm Delivery Button }}
+        {{#unless (eq this.status "Delivered")}}
+          <form
+            action="/delivery/update-status/{{this._id}}"
+            method="POST"
+            onsubmit="return confirm('Mark this order as delivered?');"
+          >
+            <input type="hidden" name="newStatus" value="Delivered" />
+            <button type="submit" class="confirm-btn">✅ Confirm Delivery</button>
+          </form>
+        {{else}}
+          <p><strong>✅ Delivered</strong></p>
+        {{/unless}}
+      </div>
+    {{/each}}
+    <script src="js/initMap.js"></script>
+  </body> 
+</html>

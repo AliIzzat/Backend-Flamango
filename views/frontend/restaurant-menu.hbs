@@ -1,0 +1,126 @@
+<head>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+  <div class="site-header">
+  <div class="header">  
+  <a href="/home#restaurants" class="back-button" style="font-weight: bold;">
+      <i class="fas fa-arrow-left" style="margin:3 5"></i>Back to Restaurants
+  </a>
+  </div>
+  <div class="restaurant-menu-page">
+    <h1 class="restaurant-name">{{restaurantName}} Menu</h1>
+    <h3 class="restaurant-address">📍{{restaurantAddress}}</h3>
+  </div>
+  </div>  
+  <!-- ======================================================================== -->
+<div class="block">
+  {{#each meals}}
+    <div class="meal-card"
+     data-meal-id="{{this._id}}"
+     style="cursor: pointer">
+  
+  <!-- 📷 Meal Image -->
+  <div class="menu-image-wrapper" style="position: relative;">
+    <img src="{{this.image}}" alt="{{this.name}}" />
+    <div class="price-tag">QR{{this.price}}</div>
+
+    <!-- 💖 Heart Button -->
+  
+      <button type="button" class="heart-icon" data-id="{{this._id}}">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path 
+          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+             2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+             C13.09 3.81 14.76 3 16.5 3 
+             19.58 3 22 5.42 22 8.5
+             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              fill="{{#if (includes ../favorites this._id)}}red{{else}}none{{/if}}"
+                stroke="red"
+                stroke-width="2"
+        />
+      </svg>
+    </button>
+
+    {{#if this.offer}}
+      <div class="discount-ribbon">Discount</div>
+    {{/if}}
+  </div>
+
+  <!-- 🍽️ Meal Info -->
+  <div class="meal-info">
+    <div class="text-en_h">{{this.name}}</div>
+    <div class="text-en">{{this.details}}</div>
+  </div>
+</div>
+  {{/each}}
+</div>
+  <script src="/js/cart-add.js" defer></script>
+  <script src="/js/handleheart.js"></script>
+  <script src="/js/scrollToMeal.js"></script>
+  <script src="/js/menu.js" defer></script>
+  
+  <script>
+    window.addEventListener("load", () => {
+      const hash = window.location.hash;
+    if (!hash) return;
+    const tryScrollAndHighlight = () => {
+      const target = document.querySelector(hash);
+      if (target)
+       { target.scrollIntoView({
+        behavior: "smooth", block: "center" });
+        target.classList.add("highlight-meal");
+        setTimeout(() => {
+        target.classList.remove("highlight-meal");
+        }, 5000);
+        } else {
+        setTimeout(tryScrollAndHighlight, 100); }
+        }; tryScrollAndHighlight();
+        });
+  </script>
+  <script>
+// Listen for cart updates from anywhere
+window.addEventListener('cart:updated', (e) => {
+  const { count, total } = e.detail || {};
+  let badge = document.querySelector('#cart-count');
+
+  // If the badge is missing, create a simple one so the UI updates without refresh
+  if (!badge) {
+    let link = document.querySelector('.cart-link');
+    if (!link) {
+      link = document.createElement('a');
+      link.href = '/cart/view';
+      link.className = 'cart-link';
+      link.style.position = 'fixed';
+      link.style.right = '12px';
+      link.style.top = '12px';
+      link.style.background = 'white';
+      link.style.padding = '6px 10px';
+      link.style.borderRadius = '12px';
+      link.style.boxShadow = '0 2px 6px rgba(0,0,0,.1)';
+      link.style.zIndex = '9999';
+      link.innerHTML = '🛒 Cart <span id="cart-count">0</span>';
+      document.body.appendChild(link);
+    }
+    badge = document.querySelector('#cart-count');
+  }
+
+  if (badge && typeof count === 'number') {
+    badge.textContent = count;
+    // tiny pulse for feedback
+    badge.style.transition = 'transform 120ms ease';
+    badge.style.transform = 'scale(1.2)';
+    setTimeout(() => (badge.style.transform = 'scale(1)'), 130);
+  }
+
+  // Optional: expose latest totals if you have a mini-cart
+  window.__cartSummary = e.detail;
+});
+</script>
+
+</body>
+

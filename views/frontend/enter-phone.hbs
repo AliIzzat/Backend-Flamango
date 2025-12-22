@@ -1,0 +1,27 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Enter Phone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <section style="text-align: center; padding: 2rem;">
+      <h2>📱 Enter Your Phone Number</h2>
+      <form
+        action="/auth/send-otp"
+        method="POST"
+        style="max-width: 400px; margin: auto;"
+      >
+        <input
+          type="tel"
+          name="phone"
+          placeholder="55226827"
+          required
+          style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;"
+        />
+        <button type="submit" style="padding: 0.5rem 1rem;">Send OTP</button>
+      </form>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+ <head>
+ <link rel="stylesheet" href="/css/style.css" />
+</head>
+<div
+  style="max-width: 600px; margin: 2rem auto; font-family: Arial, sans-serif; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;"
+>
+
+  <div style="direction: ltr; text-align: left;">
+    {{#if (eq status "success")}}
+      <h2 style="color: green;">✅ Payment Successful</h2>
+      <p><strong>Order ID:</strong> {{order._id}}</p>
+      <p><strong>Customer:</strong> {{order.customerName}}</p>
+      <p><strong>Status:</strong> Paid</p>
+
+      <h3 style="margin-top: 1rem;">🧾 Meals Ordered by Restaurant:</h3>
+
+{{#each orders}}
+  <div style="margin-top: 1rem; border-top: 1px solid #ccc; padding-top: 1rem;">
+    <h4>🏪 Restaurant: {{this.restaurantName}}</h4>
+    <ul style="padding-left: 1rem;">
+      {{#each this.mealIds}}
+        <li>{{this.name}} – QAR {{this.price}} x {{this.quantity}}</li>
+      {{/each}}
+    </ul>
+    <p><strong>Subtotal:</strong> QAR {{this.totalAmount}}</p>
+  </div>
+{{/each}}
+
+<h3 style="margin-top: 1rem;">💵 Total Paid:
+  <span style="color: #007bff;">QAR {{totalAmount}}</span>
+</h3>
+
+      <h3>Total Paid:
+        <span style="color: #007bff;">QAR {{order.totalAmount}}</span></h3>
+
+      {{#if order.coordinates}}
+        <div style="margin-top: 1rem;">
+          <h4>📍 Delivery Location:</h4>
+          <iframe
+            width="100%"
+            height="180"
+            style="border:0; border-radius: 8px;"
+            loading="lazy"
+            allowfullscreen
+            src="https://www.google.com/maps?q={{order.coordinates.coordinates.[1]}},{{order.coordinates.coordinates.[0]}}&output=embed"
+          ></iframe>
+        </div>
+      {{/if}}
+
+    {{else if (eq status "failed")}}
+      <h2 style="color: red;">❌ Payment Failed</h2>
+      <p>Something went wrong during the payment process. Please try again.</p>
+
+    {{else if (eq status "missing")}}
+      <h2>⚠️ Missing Order ID</h2>
+      <p>No order ID was provided in the payment response.</p>
+
+    {{else if (eq status "not-found")}}
+      <h2>⚠️ Order Not Found</h2>
+      <p>The order ID provided does not exist in our system.</p>
+
+    {{else}}
+      <h2>❌ An Error Occurred</h2>
+      <p>We encountered an unexpected error while processing your payment.</p>
+    {{/if}}
+  </div>
+</div>

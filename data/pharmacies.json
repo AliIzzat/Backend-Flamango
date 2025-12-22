@@ -1,0 +1,12 @@
+[
+     {"id": 1, "name": "Health First","image":"/pharmacies/pharm1.png"},
+    { "id": 2, "name": "MediCare","image":"/pharmacies/pharm2.png"},
+    { "id": 3, "name": "LifePharm","image":"/pharmacies/pharm3.png"},
+    { "id": 4, "name": "PharmaHub","image":"/pharmacies/pharm4.png"},
+    { "id": 5, "name": "Wellness Pharmacy","image":"/pharmacies/pharm5.png"},
+    { "id": 6, "name": "PharmaZone","image":"/pharmacies/pharm6.png"},
+    { "id": 7, "name": "Vital Drugs","image":"/pharmacies/pharm7.png"},
+    { "id": 8, "name": "CareRx","image":"/pharmacies/pharm8.png"},
+    { "id": 9, "name": "CureAid","image":"/pharmacies/pharm9.png"},
+    { "id": 10, "name":"HealthPoint","image":"/pharmacies/pharm10.png"}
+]

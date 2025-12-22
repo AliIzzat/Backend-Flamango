@@ -1,0 +1,31 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<div class="glassy-text-container">
+  <nav class="navbar">
+    <ul class="nav-links">
+      {{#unless (eq currentPath "/restaurant")}}
+        <li><a href="/restaurant" style="color: rgb(239, 41, 6);font-size:1rem;font-weight:bolder">
+          <i class="fas fa-utensils"></i> Restaurants</a></li>
+      {{/unless}}
+      {{#unless (eq currentPath "/cuisines")}}
+        <li><a href="/cuisines" style="color: rgb(140, 102, 6);font-size:1rem;font-weight:bolder">
+          <i class="fas fa-kitchen-set"></i> Cuisines</a></li>
+      {{/unless}}
+      {{#unless (eq currentPath "/grocery")}}
+        <li><a href="/grocery" style="color: seagreen;font-size:1rem;font-weight:bolder">
+          <i class="fas fa-shopping-cart"></i> Grocery</a></li>
+      {{/unless}}
+      {{#unless (eq currentPath "/health-beauty")}}    
+        <li><a href="/health-beauty" style="color: blueviolet;font-size:1rem;font-weight:bolder">
+          <i class="fas fa-spa"></i> Health &amp; Beauty</a></li>
+      {{/unless}}
+      {{#unless (eq currentPath "/flowers")}}
+        <li><a href="/flowers" style="color: rgb(19, 131, 251);font-size:1rem;font-weight:bolder">
+          Flowers <i class="fas fa-seedling"></i></a></li>
+      {{/unless}}
+    </ul>
+  </nav>
+</div>

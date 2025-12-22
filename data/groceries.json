@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Fresh Mart", "image": "/grocery/grocery1.jpg" },
+  { "id": 2, "name": "Green Basket", "image": "/grocery/grocery2.jpg" },
+  { "id": 3, "name": "MarketHub", "image": "/grocery/grocery3.jpg" },
+  { "id": 4, "name": "Daily Needs", "image": "/grocery/grocery4.jpg" },
+  { "id": 5, "name": "EcoMart", "image": "/grocery/grocery5.jpg" },
+  { "id": 6, "name": "GroceryGo", "image": "/grocery/grocery6.jpg" },
+  { "id": 7, "name": "Organic Bay", "image": "/grocery/grocery7.jpg" },
+  { "id": 8, "name": "Foodies Market", "image": "/grocery/grocery8.jpg" },
+  { "id": 9, "name": "Urban Fresh", "image": "/grocery/grocery9.jpg" },
+  { "id": 10, "name": "QuickCart", "image": "/grocery/grocery10.jpg" }
+]

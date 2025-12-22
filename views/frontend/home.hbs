@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* minimal styles so the + button is visible and clickable */
+    .image-wrapper { position: relative; }
+    .add-form { position: absolute; right: 8px; bottom: 8px; z-index: 50; }
+    .add-to-cart{
+      padding: .4rem .6rem; border: 0; border-radius: .7rem;
+      background: #ff4d3a; color: #fff; font-weight: 700; line-height: 1;
+      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    }
+    .add-to-cart:active { transform: scale(.96); }
+  </style>
+</head>
+
+<body>
+  <div class="category-buttons">
+    {{> carousel}}
+
+    <div class="control-grid">
+      <div class="control-card" onclick="scrollToSection('meals', 1000)">
+        <div style="font-weight:bold;font-size:small;margin:0">المأكولات</div>
+        <img src="/icons/meals.png" style="width:40px;height:40px">
+        <div class="control-label">Meals</div>
+      </div>
+
+      <div class="control-card" onclick="scrollToSection('restaurant', 1000)">
+        <div style="font-weight:bold;font-size:small;margin:0">المطاعم</div>
+        <img src="/icons/rest.png" style="width:40px;height:40px">
+        <div class="control-label">Restaurant</div>
+      </div>
+
+      <div class="control-card" onclick="scrollToSection('grocery', 1000)">
+        <div style="font-weight:bold;font-size:small">التسوق</div>
+        <img src="/icons/groceryTrans.png" style="width:40px;height:40px">
+        <div class="control-label">Grocery</div>
+      </div>
+
+      <div class="control-card" onclick="scrollToSection('child', 1000)">
+        <div style="font-weight:bold;font-size:small">الطفوله</div>
+        <img src="/icons/babycare.png" style="width:40px;height:40px">
+        <div class="control-label">Child Care</div>
+      </div>
+
+      <div class="control-card" onclick="scrollToSection('pharmacy', 1000)">
+        <div style="font-weight:bold;font-size:small">الصيدليات</div>
+        <img src="/icons/Farm_1.png" style="width:40px;height:40px">
+        <div class="control-label">Pharmacy</div>
+      </div>
+
+      <div class="control-card" onclick="scrollToSection('flowers', 1000)">
+        <div style="font-weight:bold;font-size:small">زهور</div>
+        <img src="/icons/FlowersBouq.png" style="width:40px;height:40px">
+        <div class="control-label">Flowers</div>
+      </div>
+
+      <div class="control-card" onclick="scrollToSection('nutrition', 1000)">
+        <div style="font-weight:bold;font-size:small">التغذية</div>
+        <img src="/icons/sportsbody.png" style="width:40px;height:40px">
+        <div class="control-label">Nutrition</div>
+      </div>
+
+      <div class="control-card" onclick="scrollToSection('electronics', 1000)">
+        <div style="font-weight:bold;font-size:small">الآلكترونيات</div>
+        <img src="/icons/shops.png" style="width:40px;height:40px">
+        <div class="control-label">Electronics</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="main-content">
+
+    <!-- ---------------------------- Meals ---------------------------- -->
+    <section id="meals">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#c72b66">Popular</span>
+        <span style="color:#520582">Meals</span>
+      </h3>
+
+      <div class="scroll-wrapper">
+        <div class="scroll-container">
+          {{#each allMeals}}
+          <div class="meal-card"
+               data-meal-id="{{this._id}}"
+               data-name="{{this.name}}"
+               data-price="{{this.price}}"
+               data-restaurant="{{this.restaurant_en}}">
+            <div>
+              <div class="image-wrapper">
+                <img src="{{this.image}}" alt="{{this.name}}" loading="lazy" />
+                <div class="price-tag">QR{{this.price}}</div>
+                {{#if this.offer}}<div class="discount-ribbon">Discount</div>{{/if}}
+
+                <button type="button" class="heart-icon" data-id="{{this._id}}">
+                  <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                    <path
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                         2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+                         C13.09 3.81 14.76 3 16.5 3
+                         19.58 3 22 5.42 22 8.5
+                         c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                      fill="{{#if (includes ../favorites this._id)}}red{{else}}none{{/if}}"
+                      stroke="red" stroke-width="2"/>
+                  </svg>
+                </button>
+
+                <!-- ✅ No-JS add-to-cart (posts to /cart/add) -->
+                <form action="/cart/add" method="post" class="add-form" onsubmit="event.stopPropagation()">
+                  <input type="hidden" name="mealId" value="{{this._id}}">
+                  <input type="hidden" name="qty" value="1">
+                  <button type="submit" class="add-to-cart" title="Add {{this.name}} to cart"
+                          onclick="event.stopPropagation()">＋</button>
+                </form>
+              </div>
+
+              <form data-mealid="{{this._id}}">
+                <input type="hidden" name="mealId" value="{{this._id}}" />
+                <div class="star-rating">
+                  {{#each (array 1 2 3 4 5)}}
+                  <input type="radio"
+                         id="star-{{../this._id}}-{{this}}"
+                         name="rating"
+                         value="{{this}}"
+                         {{#if (eq ../this.rating this)}}checked{{/if}} />
+                  <label for="star-{{../this._id}}-{{this}}">★</label>
+                  {{/each}}
+                </div>
+              </form>
+
+              <div class="restaurant_en">{{this.restaurant_en}}</div>
+              <div class="restaurant_ar">{{this.restaurant_ar}}</div>
+            </div>
+
+            <div class="Text-details">
+              <div class="english-text">
+                <div class="meal-name">{{this.name}}</div>
+                <div class="meal-desc">{{this.details}}</div>
+              </div>
+              <br>
+              <div class="arabic-text">
+                <div class="meal-name" style="font-weight:bold">{{this.name_ar}}</div>
+                <div class="meal-desc">{{this.details_ar}}</div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+
+        <button id="scrollLeftBtn" class="scroll-arrow left">&#10094;</button>
+        <button id="scrollRightBtn" class="scroll-arrow right">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- ---------------------------- Restaurants -------------------------- -->
+    <section id="restaurant">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#520582">Resta</span><span style="color:#c72b66">urants</span>
+      </h3>
+      <div class="scroll-wrapper">
+        <div class="scroll-container">
+          {{#each restaurants}}
+          <a href="/restaurant/{{this.restaurant_en}}" class="restaurant-card-link">
+            <div class="restaurant-card">
+              <img src="{{this.logo}}" alt="{{this.restaurant_en}}">
+              <div class="restaurant-card-info" style="font-size:large">{{this.restaurant_ar}}</div>
+              <div class="restaurant-card-info" style="font-size:large">{{this.restaurant_en}}</div>
+            </div>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------- Grocery ----------------------------- -->
+    <section id="grocery">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#c72b66">Grocery</span><span style="color:#520582">Stores</span>
+      </h3>
+      <div class="shop-scroll-wrapper">
+        <div class="shop-scroll-container">
+          {{#each groceries}}
+          <a href="{{this.link}}" class="shop-card-grocery">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <p class="shop-name-grocery">{{this.name}}</p>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------- Child Care -------------------------- -->
+    <section id="child">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#c72b66">Child</span><span style="color:#520582">Care</span>
+      </h3>
+      <div class="shop-scroll-wrapper">
+        <div class="shop-scroll-container">
+          {{#each childCareStores}}
+          <a href="{{this.link}}" class="shop-card-child">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <p class="shop-name-child">{{this.name}}</p>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------- Pharmacy ---------------------------- -->
+    <section id="pharmacy">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#520582">Phar</span><span style="color:#c72b66">macy</span>
+      </h3>
+      <div class="shop-scroll-wrapper">
+        <div class="shop-scroll-container">
+          {{#each pharmacies}}
+          <a href="{{this.link}}" class="shop-card-pharmacy">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <p class="shop-name-pharmacy">{{this.name}}</p>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------- Flowers ----------------------------- -->
+    <section id="flowers">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#c72b66">Flo</span><span style="color:#520582">wers</span>
+      </h3>
+      <div class="shop-scroll-wrapper">
+        <div class="shop-scroll-container">
+          {{#each flowerShops}}
+          <a href="{{this.link}}" class="shop-card-flowers">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <p class="shop-name-flowers">{{this.name}}</p>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------- Nutrition --------------------------- -->
+    <section id="nutrition">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#520582">Nutr</span><span style="color:#c72b66">ition</span>
+      </h3>
+      <div class="shop-scroll-wrapper">
+        <div class="shop-scroll-container">
+          {{#each nutrition}}
+          <a href="{{this.link}}" class="shop-card-nutrition">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <p class="shop-name-nutrition">{{this.name}}</p>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------- Electronics ------------------------- -->
+    <section id="electronics">
+      <h3 style="padding:0;margin:0">
+        <span style="color:#c72b66">Elect</span><span style="color:#520582">ronics</span>
+      </h3>
+      <div class="shop-scroll-wrapper">
+        <div class="shop-scroll-container">
+          {{#each electronics}}
+          <a href="{{this.link}}" class="shop-card-electronics">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <p class="shop-name-electronics">{{this.name}}</p>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+  </div> <!-- /#main-content -->
+
+  <script src="/js/carouselscript.js"></script>
+
+  <script>
+    // Smooth scroll
+    function scrollToSection(id, duration) {
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      const headerOffset = 90;
+      const viewportHeight = window.innerHeight;
+      const rect = target.getBoundingClientRect();
+      const startY = window.scrollY;
+      const targetY = rect.height < viewportHeight
+        ? rect.top + window.scrollY - (viewportHeight - rect.height) / 2 - headerOffset
+        : rect.top + window.scrollY - headerOffset;
+
+      const startTime = performance.now();
+      function easeInOutQuad(t){ return t < .5 ? 2*t*t : -1 + (4 - 2*t)*t; }
+      function step(now){
+        const p = Math.min((now - startTime) / duration, 1);
+        window.scrollTo(0, startY + (targetY - startY) * easeInOutQuad(p));
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // One small delegated handler for hearts; prevent card/anchor bubbling.
+    document.addEventListener('click', async (e) => {
+      const heart = e.target.closest('.heart-icon');
+      if (!heart) return;
+      e.preventDefault(); e.stopPropagation();
+
+      const mealId = heart.dataset.id;
+      try {
+        const res = await fetch('/favorites/toggle', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mealId })
+        });
+        if (!res.ok) return;
+
+        const path = heart.querySelector('svg path');
+        const isFav = path.getAttribute('fill') === 'red';
+        if (isFav) {
+          path.setAttribute('fill','none');
+          path.setAttribute('stroke','red');
+          path.setAttribute('stroke-width','2');
+        } else {
+          path.setAttribute('fill','red');
+          path.removeAttribute('stroke');
+          path.removeAttribute('stroke-width');
+        }
+      } catch(err) { console.error('Heart toggle failed:', err); }
+    });
+
+    // Stop star clicks from bubbling
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('input[type="radio"][name="rating"], label[for^="star-"]')) {
+        e.stopPropagation();
+      }
+    });
+
+    // Scroll arrows (meals section)
+    document.addEventListener('DOMContentLoaded', () => {
+      const section = document.querySelector('#meals');
+      if (!section) return;
+      const scroller = section.querySelector('.scroll-container');
+      section.querySelector('#scrollLeftBtn')?.addEventListener('click', () =>
+        scroller.scrollBy({ left: -300, behavior: 'smooth' }));
+      section.querySelector('#scrollRightBtn')?.addEventListener('click', () =>
+        scroller.scrollBy({ left: 300, behavior: 'smooth' }));
+    });
+  </script>
+</body>
+</html>

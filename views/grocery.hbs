@@ -1,0 +1,18 @@
+<head>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <h2 style="text-align: center; margin-top: 1rem;">
+    🛒 <span style="color: #28a745;">Grocery</span> <span style="color: #f30707;">Stores</span>
+  </h2>
+
+  <div class="shop-grid">
+    {{#each groceries}}
+      <div class="shop-card">
+        <img src="{{this.image}}" alt="{{this.name}}">
+        <div class="shop-name">{{this.name}}</div>
+      </div>
+    {{/each}}
+  </div>
+</body>

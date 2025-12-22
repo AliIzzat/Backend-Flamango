@@ -1,0 +1,24 @@
+{{! views/delivery-available.hbs }}
+<h2 style="text-align: center;">📦 Available Orders</h2>
+
+{{#each orders}}
+  <div
+    style="border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; border-radius: 6px; max-width: 500px; margin-inline: auto;"
+  >
+    <p><strong>Customer:</strong> {{this.customerMobile}}</p>
+    <p><strong>Total:</strong> QAR {{this.totalAmount}}</p>
+    <p><strong>Status:</strong> {{this.status}}</p>
+    <p><strong>Restaurant:</strong> {{this.restaurant.restaurant_en}}</p>
+    <p><strong>Address:</strong>
+      City:{{this.deliveryDetails.city}}, Street:{{this.deliveryDetails.street}},
+      Building:{{this.deliveryDetails.building}}, Apt:{{this.deliveryDetails.aptNo}}
+      Zone:{{this.deliveryDetails.zone}}</p>
+    <form method="POST" action="/delivery/claim/{{this._id}}">
+      <button style="margin-top: 0.5rem;">Claim This Order</button>
+    </form>
+  </div>
+{{/each}}
+
+{{#unless orders.length}}
+  <p style="text-align: center;">No pending orders at the moment.</p>
+{{/unless}}

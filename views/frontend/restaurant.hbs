@@ -1,0 +1,29 @@
+<h2 style="text-align: center;">Add / Edit Restaurant</h2>
+
+<form
+  action="/dashboard/restaurant/add"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <div>
+    <label for="restaurant_ar">Arabic Name:</label>
+    <input type="text" id="restaurant_ar" name="restaurant_ar" required />
+  </div>
+  <br />
+  <div>
+    <label for="restaurant_en">English Name:</label>
+    <input type="text" id="restaurant_en" name="restaurant_en" required />
+  </div>
+  <br />
+  <div>
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required />
+  </div>
+  <br />
+  <div>
+    <label for="logo">Restaurant Logo:</label>
+    <input type="file" id="logo" name="logo" accept="image/*" required />
+  </div>
+  <br />
+  <button type="submit">Save Restaurant</button>
+</form>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <section style="text-align:center; padding:1rem;">
+    <h2 class="neon-text">Customer Registration (Optional)</h2>
+    <p style="color:gray; margin-top:0.5rem;">You can skip and continue to your order.</p>
+  </section>
+
+  <form action="/register" method="POST" class="vertical-form" style="max-width:480px; margin: 0 auto;">
+    <label>Full Name</label>
+    <input type="text" name="name" value="{{customer.name}}" placeholder="Full Name" />
+
+    <label>Email</label>
+    <input type="email" name="email" value="{{customer.email}}" placeholder="Email" />
+
+    <label>Phone</label>
+    <input type="tel" name="phone" value="{{customer.phone}}" placeholder="Phone Number" />
+
+    <button type="submit" class="checkout-button" style="width:100%; margin-top:1rem;">
+      Save & Continue
+    </button>
+  </form>
+
+  <div style="text-align:center; margin-top:1rem;">
+    <a href="/order/confirm" class="btn-secondary">Skip for now</a>
+  </div>
+</body>
+</html>

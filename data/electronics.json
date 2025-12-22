@@ -1,0 +1,12 @@
+[
+    {"id": 1, "name": "Cloud Computing", "image": "/electronics/ele1.png"},
+    {"id": 2, "name": "Al Arabia Computer", "image": "/electronics/ele2.png"},
+    {"id": 3, "name": "Computer Service", "image":  "/electronics/ele3.png"},
+    {"id": 4, "name": "IBM", "image": "/electronics/ele4.png"},
+    {"id": 5, "name": "Microsoft Qatar", "image": "/electronics/ele5.png"},
+    {"id": 6, "name": "It Technology", "image": "/electronics/ele6.png"},
+    {"id": 7, "name": "Computer Trading", "image": "/electronics/ele7.png"},
+    {"id": 8, "name": "Thinkers", "image": "/electronics/ele8.png"},
+    {"id": 9, "name": "Web and Computing", "image": "/electronics/ele9.png"},
+    {"id": 10,"name": "Magic Solution", "image": "/electronics/ele10.png"}
+  ]

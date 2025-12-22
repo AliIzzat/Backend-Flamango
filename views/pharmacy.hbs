@@ -1,0 +1,20 @@
+<head>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+</head>
+<body>
+  {{!-- {{>menu}} --}}
+
+  <!-- ✅ Section 1: Pharmacies -->
+  <h2 class="section-title">🏥 Pharmacies</h2>
+  <div class="card-grid">
+    {{#each pharmacies}}
+      <div class="card" onclick="location.href='/pharmacy/{{this.id}}'">
+        <i class="fas fa-prescription-bottle-alt"></i>
+        <div class="card-name">{{this.name}}</div>
+      </div>
+    {{/each}}
+  </div>
+</body>

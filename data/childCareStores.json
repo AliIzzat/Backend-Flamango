@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Baby Planet", "image": "/child/child1.png"},
+  { "id": 2, "name": "KiddoCare", "image": "/child/child2.png"},
+  { "id": 3, "name": "Little Steps", "image": "/child/child3.png"},
+  { "id": 4, "name": "NewBorns", "image": "/child/child4.png"},
+  { "id": 5, "name": "TinyToes", "image": "/child/child5.png"},
+  { "id": 6, "name": "Mum & Baby", "image": "/child/child6.png"},
+  { "id": 7, "name": "BabyMart", "image": "/child/child7.png"},
+  { "id": 8, "name": "Care4Kids", "image": "/child/child8.png"},
+  { "id": 9, "name": "SweetBaby", "image": "/child/child9.png"},
+  { "id": 10,"name": "Toddler Town", "image": "/child/child10.png"}
+]

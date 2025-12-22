@@ -1,0 +1,44 @@
+<h1>{{title}}</h1>
+
+{{#if drivers.length}}
+  {{#each drivers}}
+    <h2>Driver: {{this.driverName}}</h2>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Meal</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Line Total</th>
+          <th>Order Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.orders}}
+          <tr>
+            <td>{{orderId}}</td>
+            <td>{{status}}</td>
+            <td>{{createdAt}}</td>
+            <td>{{customerName}}</td>
+            <td>{{customerMobile}}</td>
+            <td>{{customerAddress}}</td>
+            <td>{{mealName}}</td>
+            <td>{{quantity}}</td>
+            <td>{{price}}</td>
+            <td>{{lineTotal}}</td>
+            <td>{{totalAmount}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <hr />
+  {{/each}}
+{{else}}
+  <p>No driver orders found.</p>
+{{/if}}

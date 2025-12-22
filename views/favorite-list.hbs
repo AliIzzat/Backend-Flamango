@@ -1,0 +1,42 @@
+<head>
+ <link rel="stylesheet" href="/css/style.css" />
+</head>
+{{! Extends your main layout }}
+{{#extend "main"}}
+  {{#content "body"}}
+    <section>
+      <h2>Your Favorite Foods 🍽️</h2>
+      {{#if foods.length}}
+        <form action="/order/favorite-selection" method="POST">
+  <div class="food-grid">
+    {{#each foods}}
+      <div class="food-card">
+        <input type="checkbox" name="selectedFavorites" value="{{_id}}" />
+
+        <img src="{{image}}" alt="{{name}}" class="food-image" />
+        <h3>{{name}}</h3>
+        <p>{{description}}</p>
+        <p><strong>Price:</strong> QAR {{price}}</p>
+
+        {{#if offer}}
+          <p class="offer">Offer valid for {{period}} days</p>
+        {{/if}}
+
+        {{! Optional: Remove from favorites }}
+        <form action="/favorites/remove" method="POST">
+          <input type="hidden" name="foodId" value="{{_id}}" />
+          <button type="submit" class="remove-btn">❌ Remove</button>
+        </form>
+      </div>
+    {{/each}}
+  </div>
+
+  <button type="submit" style="margin-top: 1rem;">➕ Add Selected to Cart</button>
+</form>
+
+      {{else}}
+        <p>No favorite foods yet. Go add some! ❤️</p>
+      {{/if}}
+    </section>
+  {{/content}}
+{{/extend}}

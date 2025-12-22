@@ -1,0 +1,70 @@
+<head>
+ <link rel="stylesheet" href="/css/style.css" />
+ </head>
+<h2>Edit Food Item</h2>
+
+<form action="/dashboard/edit/{{food._id}}" method="POST" enctype="multipart/form-data">
+  <label>Name:</label>
+  <input type="text" name="name" value="{{food.name}}" required>
+  <input type="text" name="name_ar" value="{{food.name_ar}}" required dir="rtl">
+  <label>Restaurant:</label>
+  <input type="text" name="restaurant_en" value="{{food.restaurant_en}}" required>
+  <input type="text" name="restaurant_ar" value="{{food.restaurant_ar}}" required dir="rtl">
+  <label>Address:</label>
+  <input type="text" name="address" value="{{food.address}}">
+
+  <label>Price:</label>
+  <input type="number" name="price" value="{{food.price}}"  style="width:50px" step="0.5" required>
+
+  <label>Details:</label>
+  <input type="text" name="details" value="{{food.details}}">
+  <input type="text" name="details_ar" value="{{food.details_ar}}" dir="rtl">
+
+  <label>Cuisine:</label>
+  <select name="cuisine">
+    <option value="" selected>Select cuisine</option>
+    <option value="Indian" {{#ifEquals food.cuisine "Indian"}}selected{{/ifEquals}}>Indian</option>
+    <option value="Italian" {{#ifEquals food.cuisine "Italian"}}selected{{/ifEquals}}>Italian</option>
+    <option value="Chinese" {{#ifEquals food.cuisine "Chinese"}}selected{{/ifEquals}}>Chinese</option>
+    <option value="Japanese" {{#ifEquals food.cuisine "Japanese"}}selected{{/ifEquals}}>Japanese</option>
+    <option value="Mexican" {{#ifEquals food.cuisine "Mexican"}}selected{{/ifEquals}}>Mexican</option>
+    <option value="Greek" {{#ifEquals food.cuisine "Greek"}}selected{{/ifEquals}}>Greek</option>
+    <option value="Thai" {{#ifEquals food.cuisine "Thai"}}selected{{/ifEquals}}>Thai</option>
+    <option value="Spanish" {{#ifEquals food.cuisine "Spanish"}}selected{{/ifEquals}}>Spanish</option>
+    <option value="Turkish" {{#ifEquals food.cuisine "Turkish"}}selected{{/ifEquals}}>Turkish</option>
+  </select>
+
+  <label>Offer:</label>
+  <input type="radio" name="offer" value="true" {{#if food.offer}}checked{{/if}}> Yes
+  <input type="radio" name="offer" value="false" {{#unless food.offer}}checked{{/unless}}> No
+  <p>&nbsp;</p>
+  <label>Offer Period (days):</label>
+  <input type="number" name="period" style="width: 50px" value="{{food.period}}" min="0" default= 0 not required/>
+  
+  <p>Current Image:</p>
+  <img src="{{food.image}}" alt="Current Image" width="150"><br><br>
+
+  <label for="image">Update Image:</label>
+  <input type="file" name="image" id="fileInput" style="display: none;">
+
+  <!-- Optional: Fake input + custom search button -->
+  <input type="text" id="fileName" disabled placeholder="No file chosen">
+  <button type="button" onclick="document.getElementById('fileInput').click()">Search</button>
+
+  <br><br>
+  <button type="submit">Update</button>
+</form>
+
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const fileNameInput = document.getElementById('fileName');
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (file) {
+      fileNameInput.value = file.name;
+    } else {
+      fileNameInput.value = '';
+    }
+  });
+</script>

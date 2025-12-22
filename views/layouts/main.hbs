@@ -1,0 +1,57 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{title}} | Flamingos Express</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+    {{!-- <nav>
+   <a href="/">Home</a>
+    <a href="/restaurants">Restaurants</a> 
+    <a href="/cart/view" class="cart-link">
+      🛒 Cart <span id="cart-count" class="js-cart-count">{{cartCount}}</span>
+    </a>
+  </nav> --}}
+</head>
+<body>
+  <div class="wrapper">
+    <main class="main-content">
+      {{{body}}}
+    </main>
+  </div>
+
+    <!-- ✅ Mini Cart Popup -->
+  <div id="miniCart" class="mini-cart hidden" aria-hidden="true">
+    <div class="mini-cart__header">
+      <strong>My Cart</strong>
+      <button id="miniCartClose" class="mini-cart__close" aria-label="Close">×</button>
+    </div>
+    <div class="mini-cart__body">
+      <ul id="miniCartList" class="mini-cart__list"></ul>
+    </div>
+    <div class="mini-cart__footer">
+      <div class="mini-cart__total">
+        <span>Total</span>
+        <span id="miniCartTotal">QR 0</span>
+      </div>
+      <div class="mini-cart__actions">
+        <a href="/cart/view" class="btn btn--secondary">View Cart</a>
+        <!-- ✅ same form as your full cart -->
+          <form id="miniCartCheckoutForm" action="/order/confirm" method="GET" style="margin:0">
+            <input type="hidden" name="customerName" value="Any User" />
+            <input type="hidden" name="location" value="Any City" />
+            <input type="hidden" name="latitude"  id="miniLatitude" />
+            <input type="hidden" name="longitude" id="miniLongitude" />
+            <button type="submit" id="miniCheckoutBtn" class="btn btn--primary">Checkout</button>
+          </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating button -->
+  <button id="miniCartFab" class="mini-cart-fab" aria-label="Open cart">
+    🛒 <span id="miniCartCount" class="mini-cart-fab__badge js-cart-count">0</span>
+  </button>
+
+  <!-- Load your popup JS -->
+  <script src="/js/miniCart.js"></script>
+</body>
+

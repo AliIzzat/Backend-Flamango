@@ -1,0 +1,12 @@
+[
+    { "id": 1, "name":"Bloom & Petal", "image": "/flowers/flowershop1.jpg"},
+    { "id": 2, "name":"Rose Avenue", "image": "/flowers/flowershop2.jpg"},
+    { "id": 3, "name":"Flora Dreams", "image": "/flowers/flowershop3.jpg"},
+    { "id": 4, "name":"Lily Lane", "image": "/flowers/flowershop4.jpg"},
+    { "id": 5, "name":"Petal Pushers", "image": "/flowers/flowershop5.jpg"},
+    { "id": 6, "name":"Daisy Delight", "image": "/flowers/flowershop6.jpg"},
+    { "id": 7, "name":"Orchid Bloom", "image": "/flowers/flowershop7.jpg"},
+    { "id": 8, "name":"Sunflower Co.", "image": "/flowers/flowershop8.jpg"},
+    { "id": 9, "name":"Garden Grace", "image": "/flowers/flowershop9.jpg"},
+    { "id": 10,"name":"The Flower Basket", "image": "/flowers/flowershop10.jpg"}
+  ]
