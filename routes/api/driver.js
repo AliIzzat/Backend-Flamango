@@ -298,5 +298,15 @@ router.post("/claim/:id", async (req, res) => {
     return res.status(500).json({ success: false, error: "SERVER_ERROR_CLAIM" });
   }
 });
+router.get("/debug/routes", (req, res) => {
+  const routes = router.stack
+    .filter((l) => l.route)
+    .map((l) => ({
+      method: Object.keys(l.route.methods)[0].toUpperCase(),
+      path: l.route.path,
+    }));
+
+  res.json({ routes });
+});
 
 module.exports = router;
