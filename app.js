@@ -46,7 +46,6 @@ const authRoutes = require("./routes/backend/auth");
 const distanceHelper = require("./utils/distance");
 
 // -------------------- Config -------------------- //
-// -------------------- Config -------------------- //
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 const isProd = process.env.NODE_ENV === "production";
 

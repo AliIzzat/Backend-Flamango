@@ -1,6 +1,7 @@
 // routes/api/driver.js
 const express = require("express");
 const router = express.Router();
+const driverAuth = require("../../middleware/driverAuth");
 
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
@@ -202,51 +203,68 @@ router.get("/available", async (_req, res) => {
 
 // ---------------- MY ORDERS ----------------
 // GET /api/driver/my-orders?driverId=.....
-router.get("/my-orders", async (req, res) => {
+router.get("/my-orders", driverAuth, async (req, res) => {
   try {
-    const driverId =
-      req.query.driverId || req.body?.driverId || req.session?.userId;
-
+    const driverId = req.user?.id;
     if (!driverId) {
-      return res
-        .status(400)
-        .json({ success: false, error: "MISSING_DRIVER_ID" });
+      return res.status(400).json({ success: false, error: "MISSING_DRIVER_ID" });
     }
 
-    const orders = await Order.find({ deliveryPersonId: driverId })
-      .populate("restaurant")
-      .lean();
+    // IMPORTANT: adjust these fields to match your Order schema
+    const orders = await Order.find({ driver: driverId }).sort({ createdAt: -1 }).lean();
 
-    const formatted = orders.map((o) => {
-      const d = o.deliveryDetails || {};
+    return res.json({ success: true, orders });
+  } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+});
 
-      const customerAddress = [
-        d.city,
-        d.zone ? `Zone ${d.zone}` : "",
-        d.street ? `Street ${d.street}` : "",
-        d.building ? `Bldg ${d.building}` : "",
-        d.floor ? `Floor ${d.floor}` : "",
-        d.aptNo ? `Apt ${d.aptNo}` : "",
-        d.addressNote,
-      ]
-        .filter(Boolean)
-        .join(", ");
 
-      return {
-        _id: String(o._id),
-        orderId: String(o._id),
-        restaurantName:
-          o.restaurant?.restaurant_en ||
-          o.restaurant?.restaurant_ar ||
-          "Unknown",
-        mealName: "",
-        customerName: o.customerName || "Mobile Customer",
-        customerPhone: o.customerMobile || "-",
-        customerAddress,
-        totalAmount: o.totalAmount || o.total || 0,
-        status: o.status,
-      };
-    });
+// router.get("/my-orders", async (req, res) => {
+//   try {
+//     const driverId =
+//       req.query.driverId || req.body?.driverId || req.session?.userId;
+
+//     if (!driverId) {
+//       return res
+//         .status(400)
+//         .json({ success: false, error: "MISSING_DRIVER_ID" });
+//     }
+
+//     const orders = await Order.find({ deliveryPersonId: driverId })
+//       .populate("restaurant")
+//       .lean();
+
+//     const formatted = orders.map((o) => {
+//       const d = o.deliveryDetails || {};
+
+//       const customerAddress = [
+//         d.city,
+//         d.zone ? `Zone ${d.zone}` : "",
+//         d.street ? `Street ${d.street}` : "",
+//         d.building ? `Bldg ${d.building}` : "",
+//         d.floor ? `Floor ${d.floor}` : "",
+//         d.aptNo ? `Apt ${d.aptNo}` : "",
+//         d.addressNote,
+//       ]
+//         .filter(Boolean)
+//         .join(", ");
+
+//       return {
+//         _id: String(o._id),
+//         orderId: String(o._id),
+//         restaurantName:
+//           o.restaurant?.restaurant_en ||
+//           o.restaurant?.restaurant_ar ||
+//           "Unknown",
+//         mealName: "",
+//         customerName: o.customerName || "Mobile Customer",
+//         customerPhone: o.customerMobile || "-",
+//         customerAddress,
+//         totalAmount: o.totalAmount || o.total || 0,
+//         status: o.status,
+//       };
+//     });
 
     return res.json({ success: true, orders: formatted });
   } catch (err) {
