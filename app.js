@@ -46,15 +46,15 @@ const pool = new Pool({
   connectionString: process.env.PG_URL,
   ssl: false, // Railway internal network
 });
-let pool = null;
+// let pool = null;
 
-if (process.env.PG_URL || process.env.DATABASE_URL) {
-  const { Pool } = require("pg");
-  pool = new Pool({
-    connectionString: process.env.PG_URL || process.env.DATABASE_URL,
-    ssl: false, // Railway internal is fine without SSL
-  });
-}
+// if (process.env.PG_URL || process.env.DATABASE_URL) {
+//   const { Pool } = require("pg");
+//   pool = new Pool({
+//     connectionString: process.env.PG_URL || process.env.DATABASE_URL,
+//     ssl: false, // Railway internal is fine without SSL
+//   });
+// }
 // Helpers
 const distanceHelper = require("./utils/distance");
 
