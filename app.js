@@ -42,10 +42,10 @@ const favoritesRoutes = require("./routes/backend/favorites");
 const dashboardRoutes = require("./routes/backend/dashboard");
 const authRoutes = require("./routes/backend/auth");
 const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.PG_URL,
-  ssl: false, // Railway internal network
-});
+// const pool = new Pool({
+//   connectionString: process.env.PG_URL,
+//   ssl: false, // Railway internal network
+// });
 // let pool = null;
 
 // if (process.env.PG_URL || process.env.DATABASE_URL) {
@@ -55,6 +55,21 @@ const pool = new Pool({
 //     ssl: false, // Railway internal is fine without SSL
 //   });
 // }
+
+const PG_URL = process.env.PG_URL || process.env.DATABASE_URL;
+
+if (!PG_URL) {
+  console.error("❌ PG_URL/DATABASE_URL missing");
+  process.exit(1);
+}
+
+const pool = new Pool({
+  connectionString: PG_URL,
+  // Railway INTERNAL typically does not require SSL.
+  // If you later use a PUBLIC postgres URL, you may need SSL:
+  // ssl: { rejectUnauthorized: false }
+});
+
 // Helpers
 const distanceHelper = require("./utils/distance");
 
@@ -156,7 +171,8 @@ app.use((req, res, next) => {
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 app.get("/api/ping", (_req, res) => res.type("text/plain").send("pong"));
 
-app.get('/api/health/db', async (req, res) => { const r = await pool.query('SELECT 1 as ok'); res.json(r.rows[0]); });
+app.get('/api/health/db', async (req, res) => { 
+  const r = await pool.query('SELECT 1 as ok'); res.json(r.rows[0]); });
 // Optional request trace (keep if you want)
 app.use((req, _res, next) => {
   console.log("➡", req.method, req.url);
