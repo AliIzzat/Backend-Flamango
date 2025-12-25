@@ -27,7 +27,8 @@
     "mongoose": "^8.18.1",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
-    "path-to-regexp": "^6.2.2"
+    "path-to-regexp": "^6.2.2",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@react-native-community/cli": "^20.0.2",
