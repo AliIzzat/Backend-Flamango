@@ -46,6 +46,15 @@ const pool = new Pool({
   connectionString: process.env.PG_URL,
   ssl: false, // Railway internal network
 });
+let pool = null;
+
+if (process.env.PG_URL || process.env.DATABASE_URL) {
+  const { Pool } = require("pg");
+  pool = new Pool({
+    connectionString: process.env.PG_URL || process.env.DATABASE_URL,
+    ssl: false, // Railway internal is fine without SSL
+  });
+}
 // Helpers
 const distanceHelper = require("./utils/distance");
 
@@ -80,8 +89,6 @@ function safeMongoTarget(uri) {
     if (!uri) return "MONGODB_URI is empty";
     // Remove query
     const noQuery = uri.split("?")[0];
-    // For mongodb://user:pass@host:port/db
-    // For mongodb+srv://user:pass@host/db
     const parts = noQuery.split("/");
     const db = parts.length >= 4 ? parts[3] : ""; // index 3 is db name
     return db || "(NO_DB_NAME -> defaults to 'test')";
