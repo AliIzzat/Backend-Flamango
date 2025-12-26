@@ -11,6 +11,7 @@ const session = require("express-session");
 const cors = require("cors");
 const morgan = require("morgan");
 const catalogPgRoutes = require("./routes/api/catalog-pg");
+const pool = require('./utils/pg');
 
 const { Pool } = require("pg");
 const PgSession = require("connect-pg-simple")(session);
@@ -105,9 +106,14 @@ app.use("/api", catalogPgRoutes);
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 app.get("/api/ping", (_req, res) => res.type("text/plain").send("pong"));
 
-app.get("/api/health/db", async (_req, res) => {
-  const r = await pool.query("SELECT 1 as ok");
-  res.json(r.rows[0]);
+app.get('/api/health/db', async (_req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT 1 AS ok');
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('❌ PG health check failed:', err.message);
+    res.status(500).json({ error: 'Postgres not reachable' });
+  }
 });
 
 // Optional request trace
