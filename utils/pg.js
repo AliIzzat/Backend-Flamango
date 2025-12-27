@@ -1,25 +1,45 @@
 // utils/pg.js
 const { Pool } = require("pg");
 
-const isProd = process.env.NODE_ENV === "production";
+function buildConfigFromParts() {
+  const required = ["PGHOST", "PGPORT", "PGDATABASE", "PGUSER", "PGPASSWORD"];
+  const missing = required.filter((k) => !process.env[k]);
+  if (missing.length) return null;
 
-const connectionString = process.env.DATABASE_URL || process.env.PG_URL;
+  return {
+    host: process.env.PGHOST,
+    port: Number(process.env.PGPORT),
+    database: process.env.PGDATABASE,
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    ssl: process.env.PGSSL === "true" ? { rejectUnauthorized: false } : false,
+  };
+}
 
-const pool = connectionString
-  ? new Pool({
-      connectionString,
-      ssl: process.env.PGSSL === "true" ? { rejectUnauthorized: false } : false,
-    })
-  : new Pool({
-      host: process.env.PGHOST,
-      port: Number(process.env.PGPORT),
-      database: process.env.PGDATABASE,
-      user: process.env.PGUSER,
-      password: process.env.PGPASSWORD,
-      ssl: process.env.PGSSL === "true" ? { rejectUnauthorized: false } : false,
-    });
+const url = process.env.DATABASE_URL || process.env.PG_URL;
+
+let pool;
+
+if (url) {
+  pool = new Pool({
+    connectionString: url,
+    ssl: process.env.PGSSL === "true" ? { rejectUnauthorized: false } : false,
+  });
+} else {
+  const cfg = buildConfigFromParts();
+  if (!cfg) {
+    console.error(
+      "❌ Postgres config missing. Set DATABASE_URL (or PG_URL) OR PGHOST/PGPORT/PGDATABASE/PGUSER/PGPASSWORD."
+    );
+    process.exit(1);
+  }
+  pool = new Pool(cfg);
+}
 
 module.exports = pool;
+
+
+
 
 
 
