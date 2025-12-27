@@ -27,9 +27,14 @@ console.log("ENV CHECK:", {
 
 // Fail fast if Postgres unreachable
 async function assertPostgres() {
-  const r = await pool.query("SELECT 1 as ok");
-  if (!r?.rows?.[0]?.ok) throw new Error("Postgres ping failed");
-  console.log("🟢 Connected to PostgreSQL");
+  try {
+    const r = await pool.query("SELECT 1 as ok");
+    if (!r?.rows?.[0]?.ok) throw new Error("Postgres ping failed");
+    console.log("🟢 Connected to PostgreSQL");
+  } catch (e) {
+    console.error("❌ Postgres connection failed:", e.message);
+    throw e;
+  }
 }
 
 const app = express();
